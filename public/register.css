@@ -47,7 +47,7 @@ body {
 }
 
 /* ============================
-   BIG CIRCLE
+   CIRCLES
 ============================ */
 .big-circle {
     position: absolute;
@@ -70,9 +70,6 @@ body {
     border: 8px solid rgba(255, 255, 255, 0.06);
 }
 
-/* ============================
-   CIRCLES
-============================ */
 .circle {
     position: absolute;
     border-radius: 50%;
@@ -119,9 +116,6 @@ body {
     z-index: 5;
 }
 
-/* ============================
-   USER ICON
-============================ */
 .user-icon-box {
     width: 77px;
     height: 77px;
@@ -143,9 +137,6 @@ body {
     stroke-linejoin: round;
 }
 
-/* ============================
-   LEFT TEXT
-============================ */
 .welcome-content h2 {
     color: white;
     font-size: clamp(24px, 2vw, 30px);
@@ -173,12 +164,9 @@ body {
     background: #0d172b;
 }
 
-/* ============================
-   REGISTER BOX
-============================ */
 .register-box {
     width: 100%;
-    max-width: 435px;
+    max-width: 480px;
 }
 
 .register-box h1 {
@@ -192,27 +180,45 @@ body {
 .subtitle {
     color: #6f80a8;
     font-size: 14px;
-    margin-bottom: 41px;
+    margin-bottom: 25px;
 }
 
 /* ============================
-   FORM ROW
+   ALERTS
+============================ */
+.alert {
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-size: 13px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.alert-danger {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    color: #fca5a5;
+}
+
+.alert-danger ul {
+    list-style-position: inside;
+}
+
+/* ============================
+   FORM ROWS & GROUPS
 ============================ */
 .form-row {
     width: 100%;
     display: flex;
-    gap: 18px;
+    gap: 16px;
 }
 
-/* ============================
-   INPUT
-============================ */
 .input-group {
     width: 100%;
-    height: 57px;
+    height: 55px;
     position: relative;
     flex: 1;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
 }
 
 .input-group input {
@@ -224,7 +230,7 @@ body {
     background: #1c293d;
     color: white;
     padding-left: 50px;
-    padding-right: 20px;
+    padding-right: 18px;
     font-family: "Poppins", sans-serif;
     font-size: 14px;
     font-weight: 500;
@@ -240,9 +246,6 @@ body {
     box-shadow: 0 0 0 3px rgba(20, 142, 158, 0.08);
 }
 
-/* ============================
-   ICON
-============================ */
 .input-icon {
     width: 18px;
     height: 18px;
@@ -260,12 +263,83 @@ body {
 }
 
 /* ============================
+   MIDDLE NAME & CHECKBOX
+============================ */
+.middle-name-wrapper {
+    margin-bottom: 6px;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-top: -6px;
+    margin-bottom: 16px;
+    padding-left: 4px;
+}
+
+.custom-checkbox {
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    font-size: 13px;
+    color: #7d90b2;
+    user-select: none;
+}
+
+.custom-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    height: 18px;
+    width: 18px;
+    background-color: #1c293d;
+    border: 1px solid #35435a;
+    border-radius: 5px;
+    margin-right: 10px;
+    display: inline-block;
+    position: relative;
+    transition: 0.2s;
+}
+
+.custom-checkbox:hover input ~ .checkmark {
+    border-color: #148e9e;
+}
+
+.custom-checkbox input:checked ~ .checkmark {
+    background-color: #159f96;
+    border-color: #159f96;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 6px;
+    top: 2px;
+    width: 4px;
+    height: 9px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.custom-checkbox input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* ============================
    BUTTON
 ============================ */
 .register-button {
     width: 100%;
     height: 55px;
-    margin-top: 13px;
+    margin-top: 10px;
     border: none;
     border-radius: 13px;
     background: linear-gradient(
@@ -294,9 +368,9 @@ body {
    SIGN IN LINK
 ============================ */
 .signin-link {
-    margin-top: 24px;
+    margin-top: 22px;
     text-align: center;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .signin-link span {
@@ -310,23 +384,7 @@ body {
 }
 
 /* ============================
-   TABLET
-============================ */
-@media (max-width: 1024px) {
-    .left-side {
-        width: 42%;
-    }
-    .right-side {
-        width: 58%;
-        padding: 32px;
-    }
-    .register-box {
-        max-width: 400px;
-    }
-}
-
-/* ============================
-   SMALL TABLET
+   RESPONSIVENESS
 ============================ */
 @media (max-width: 800px) {
     .register-page {
@@ -334,60 +392,25 @@ body {
     }
     .left-side {
         width: 100%;
-        min-height: 330px;
+        min-height: 300px;
     }
     .right-side {
         width: 100%;
         min-height: auto;
-        padding: 55px 30px 65px;
+        padding: 50px 25px 60px;
     }
     .register-box {
         max-width: 520px;
     }
 }
 
-/* ============================
-   MOBILE
-============================ */
 @media (max-width: 600px) {
-    .left-side {
-        min-height: 285px;
-    }
-    .right-side {
-        padding: 45px 22px 55px;
-    }
     .form-row {
         flex-direction: column;
         gap: 0;
     }
-    .user-icon-box {
-        width: 65px;
-        height: 65px;
-        margin-bottom: 16px;
-    }
-    .welcome-content h2 {
-        font-size: 24px;
-    }
-    .welcome-content p {
-        font-size: 12px;
-    }
-    .register-box h1 {
-        font-size: 28px;
-    }
-    .subtitle {
-        font-size: 12px;
-        margin-bottom: 30px;
-    }
     .input-group {
-        height: 55px;
-        margin-bottom: 16px;
-    }
-    .input-group input {
-        font-size: 13px;
-        padding-left: 48px;
-    }
-    .register-button {
         height: 52px;
-        font-size: 14px;
+        margin-bottom: 14px;
     }
 }
