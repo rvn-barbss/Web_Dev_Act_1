@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Attendance;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -9,38 +10,18 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
-        'first_name',
-        'middle_name',
-        'last_name',
-        'username',
-        'email',
-        'password',
+        'role', 'first_name', 'middle_name', 'last_name', 
+        'username', 'email', 'password', 
+        'student_number', 'course_section', 'photo_path'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'password', 'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -49,9 +30,6 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * Accessor to get user's full name.
-     */
     protected function fullName(): Attribute
     {
         return Attribute::make(
@@ -62,5 +40,15 @@ class User extends Authenticatable
                 return "{$this->first_name} {$this->last_name}";
             }
         );
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
     }
 }
