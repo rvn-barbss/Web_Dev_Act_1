@@ -7,6 +7,7 @@ use App\Models\Attendance;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -43,6 +44,9 @@ class AdminController extends Controller
         $filename = $validated['student_number'] . '.' . $photo->getClientOriginalExtension();
         $photoPath = $photo->storeAs('profiles', $filename, 'public');
 
+        // Generate Secure QR Token
+        $qrToken = (string) Str::uuid();
+
         User::create([
             'role' => 'student',
             'first_name' => $validated['first_name'],
@@ -52,11 +56,16 @@ class AdminController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'student_number' => $validated['student_number'],
+            'qr_token' => $qrToken,
             'course_section' => $validated['course_section'],
             'photo_path' => $photoPath,
         ]);
 
-        return redirect()->back()->with('success', 'Student successfully registered.');
+        // Return with generated token so admin can show the QR to the student
+        return redirect()->back()->with([
+            'success' => 'Student successfully registered.',
+            'new_qr_token' => $qrToken
+        ]);
     }
 
     public function showScanner()
@@ -66,11 +75,22 @@ class AdminController extends Controller
 
     public function processScan(Request $request)
     {
-        $studentNumber = $request->input('student_number');
-        $student = User::where('student_number', $studentNumber)->where('role', 'student')->first();
+        // Strict Validation to prevent scripting/injection
+        $validated = $request->validate([
+            'identifier' => 'required|string|max:255'
+        ]);
+
+        $identifier = $validated['identifier'];
+        
+        // Find by typed Student Number OR Scanned Secure QR UUID
+        $student = User::where('role', 'student')
+            ->where(function($query) use ($identifier) {
+                $query->where('student_number', $identifier)
+                      ->orWhere('qr_token', $identifier);
+            })->first();
 
         if (!$student) {
-            return response()->json(['success' => false, 'message' => 'Student record not found in database.']);
+            return response()->json(['success' => false, 'message' => 'Student record not found in database or invalid QR Code.']);
         }
 
         $today = now()->format('Y-m-d');

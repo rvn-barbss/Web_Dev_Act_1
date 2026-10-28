@@ -19,6 +19,7 @@ return new class extends Migration
             
             // Student Specific Data
             $table->string('student_number')->unique()->nullable();
+            $table->string('qr_token')->unique()->nullable(); // Secure Identifier for QR Codes
             $table->string('course_section')->nullable();
             $table->string('photo_path')->nullable();
             

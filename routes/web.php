@@ -10,7 +10,8 @@ Route::get('/', function () { return redirect()->route('login'); });
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+    // Limit to 5 login attempts per minute per IP
+    Route::post('/login', [AuthController::class, 'login'])->name('login.post')->middleware('throttle:5,1');
 });
 
 Route::middleware('auth')->group(function () {
@@ -22,7 +23,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/register-student', [AdminController::class, 'showRegister'])->name('register');
         Route::post('/register-student', [AdminController::class, 'registerStudent'])->name('register.post');
         Route::get('/scanner', [AdminController::class, 'showScanner'])->name('scanner');
-        Route::post('/scanner/scan', [AdminController::class, 'processScan'])->name('scanner.scan');
+        
+        // Limit scanning to 60 requests per minute to prevent API hammering/DDoS
+        Route::post('/scanner/scan', [AdminController::class, 'processScan'])->name('scanner.scan')->middleware('throttle:60,1');
     });
 
     // Student Routes

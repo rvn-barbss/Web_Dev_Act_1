@@ -82,6 +82,40 @@
     </form>
 </div>
 
+<!-- QR CODE MODAL OVERLAY -->
+@if(session('new_qr_token'))
+<div id="qr-modal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(13,23,43,0.95); z-index: 9999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
+    <div style="background: white; padding: 40px; border-radius: 24px; position: relative; text-align: center; max-width: 90%; box-shadow: 0 25px 50px rgba(0,0,0,0.3);">
+        
+        <!-- X Close Button -->
+        <button onclick="document.getElementById('qr-modal').style.display='none'" style="position: absolute; top: -15px; right: -15px; background: #ef4444; color: white; border: 4px solid #0d172b; border-radius: 50%; width: 45px; height: 45px; cursor: pointer; font-weight: bold; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: 0.2s ease; box-shadow: 0 4px 10px rgba(239,68,68,0.4);" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+            ✕
+        </button>
+
+        <h3 style="color: #0f172a; font-size: 22px; margin-bottom: 5px; font-weight: 700;">Registration Successful!</h3>
+        <p style="color: #64748b; font-size: 14px; margin-bottom: 25px;">Please allow the student to take a picture of this QR code.</p>
+        
+        <div style="display: inline-block; padding: 10px; border: 2px dashed #cbd5e1; border-radius: 16px;">
+            <canvas id="registration-qr"></canvas>
+        </div>
+        
+        <p style="margin-top: 20px; font-weight: 600; color: #10b981; font-size: 15px; background: rgba(16, 185, 129, 0.1); padding: 10px; border-radius: 10px;">
+            This acts as their secure ID for attendance.
+        </p>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<script>
+    new QRious({
+        element: document.getElementById('registration-qr'),
+        value: '{{ session('new_qr_token') }}',
+        size: 250,
+        level: 'H'
+    });
+</script>
+@endif
+
 @push('scripts')
 <script>
     const checkbox = document.getElementById('no_middle_name');
